@@ -16,7 +16,7 @@ import threading
 import socket
 import hashlib
 
-shared_secret = "LtX3GQoiHOGQDbU9X4NKvTr0uORad3nYZORVVoq7g"
+shared_secret = "aMiCl8Kj4MK3LpfFyxlWMHfSQYPYvYASImf0sZSZjfk"
 
 base_string = "getRecordings"
 hname = socket.gethostname()
@@ -122,7 +122,7 @@ def nine(y):
                 filecheck.close()
                 return link
             except IOError:
-                no_button = '<a href="https://' + hname + '/' + '" title="Download mp4">No File .mp4</a>'
+                no_button = '<a href="/" title="No file for download</a>'
                 return no_button
 
         def crthtml():
@@ -580,8 +580,6 @@ def nine(y):
                                     <script type="text/javascript" src="js/vendor/bootstrap/js/bootstrap.min.js"></script>
                                     <script type="text/javascript" src="js/plugins/mobile/mobile.min.js"></script>
                                     <script type="text/javascript" src="js/scripts.js"></script>
-                                    <script type="text/javascript" src="https://lpbuilder.pro/js/app.js"></script>
-                                    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-155226992-1"></script><script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}setTimeout(function(){gtag('js',new Date());gtag('config','UA-155226992-1');ym(18863995,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,trackHash:true})},2500);</script><noscript><div><img src=https://mc.yandex.ru/watch/18863995 style="position:absolute; left:-9999px;" alt></div></noscript><div style="display: none;">РїСЂРё РїРѕРґРґРµСЂР¶РєРё <a title="Р•РІРіРµРЅРёР№ Р›Р°Р·СѓРєРёРЅ - РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР° Р»РµРЅРґРёРЅРіРѕРІ Рё РјРЅРѕРіРѕСЃС‚СЂР°РЅРёРЅС‹С… СЃР°Р№С‚РѕРІ" href="https://www.lazukin.net"> Р•РІРіРµРЅРёР№ Р›Р°Р·СѓРєРёРЅ - РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР° Р»РµРЅРґРёРЅРіРѕРІ Рё РјРЅРѕРіРѕСЃС‚СЂР°РЅРёРЅС‹С… СЃР°Р№С‚РѕРІ </a> / <a title="РЎР°Р№С‚ СЃРѕР·РґР°РЅ РІ Р±РµСЃРїР»Р°С‚РЅРѕРј РѕРЅР»Р°Р№РЅ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Landing Page - LPBuilder.pro" href="https://lpbuilder.pro/">РЎР°Р№С‚ СЃРѕР·РґР°РЅ РІ Р±РµСЃРїР»Р°С‚РЅРѕРј РѕРЅР»Р°Р№РЅ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Landing Page - LPBuilder.pro</a> <script type="text/javascript">var U7=window,W8=document;var a1="%3Cdiv%20style%3D%22display%3A%20none%3B%22%3E%3Ciframe%20src%3D%22https%3A//lpbuilder.pro/counter.html%22%20width%3D%22100%25%22%20height%3D%22240%22%3E%u0412%u0430%u0448%20%u0431%u0440%u0430%u0443%u0437%u0435%u0440%20%u043D%u0435%20%u043F%u043E%u0434%u0434%u0435%u0440%u0436%u0438%u0432%u0430%u0435%u0442%20%u043F%u043B%u0430%u0432%u0430%u044E%u0449%u0438%u0435%20%u0444%u0440%u0435%u0439%u043C%u044B%21%3C/iframe%3E%3C/div%3E";function V0(){var V0;V0=unescape(a1);W8.write(V0);}V0();</script><div style="display: none;"><iframe src="https://lpbuilder.pro/counter.html" width="100%" height="240">Р’Р°С€ Р±СЂР°СѓР·РµСЂ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РїР»Р°РІР°СЋС‰РёРµ С„СЂРµР№РјС‹!</iframe></div></div>
 
                             <style>		
                             #style-switcher {
@@ -963,7 +961,7 @@ def genglobindexpage():
                                 </div><!-- /End Title Block Container -->
                             </div><!-- /End Title Block -->																		
 
-							<iframe src="https://''' + hname + '/stat/' + '''recordings_statistics.txt" width="1200" height="700" frameborder=0 id="frame"></iframe>
+							<iframe src="https://''' + hname + '/stat/' + '''recordings_statistics.html" width="1200" height="700" frameborder=0 id="frame"></iframe>
 
                         </div><!-- /End row -->
                     </div><!-- /End container -->
@@ -1142,10 +1140,8 @@ def genglobindexpage():
         <script type="text/javascript" src="js/vendor/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/plugins/mobile/mobile.min.js"></script>
         <script type="text/javascript" src="js/scripts.js"></script>
-		<script type="text/javascript" src="https://lpbuilder.pro/js/app.js"></script>
-		<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-155226992-1"></script><script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}setTimeout(function(){gtag('js',new Date());gtag('config','UA-155226992-1');ym(18863995,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,trackHash:true})},2500);</script><noscript><div><img src=https://mc.yandex.ru/watch/18863995 style="position:absolute; left:-9999px;" alt></div></noscript><div style="display: none;">РїСЂРё РїРѕРґРґРµСЂР¶РєРё <a title="Р•РІРіРµРЅРёР№ Р›Р°Р·СѓРєРёРЅ - РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР° Р»РµРЅРґРёРЅРіРѕРІ Рё РјРЅРѕРіРѕСЃС‚СЂР°РЅРёРЅС‹С… СЃР°Р№С‚РѕРІ" href="https://www.lazukin.net"> Р•РІРіРµРЅРёР№ Р›Р°Р·СѓРєРёРЅ - РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ СЂР°Р·СЂР°Р±РѕС‚РєР° Р»РµРЅРґРёРЅРіРѕРІ Рё РјРЅРѕРіРѕСЃС‚СЂР°РЅРёРЅС‹С… СЃР°Р№С‚РѕРІ </a> / <a title="РЎР°Р№С‚ СЃРѕР·РґР°РЅ РІ Р±РµСЃРїР»Р°С‚РЅРѕРј РѕРЅР»Р°Р№РЅ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Landing Page - LPBuilder.pro" href="https://lpbuilder.pro/">РЎР°Р№С‚ СЃРѕР·РґР°РЅ РІ Р±РµСЃРїР»Р°С‚РЅРѕРј РѕРЅР»Р°Р№РЅ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРµ Landing Page - LPBuilder.pro</a> <script type="text/javascript">var U7=window,W8=document;var a1="%3Cdiv%20style%3D%22display%3A%20none%3B%22%3E%3Ciframe%20src%3D%22https%3A//lpbuilder.pro/counter.html%22%20width%3D%22100%25%22%20height%3D%22240%22%3E%u0412%u0430%u0448%20%u0431%u0440%u0430%u0443%u0437%u0435%u0440%20%u043D%u0435%20%u043F%u043E%u0434%u0434%u0435%u0440%u0436%u0438%u0432%u0430%u0435%u0442%20%u043F%u043B%u0430%u0432%u0430%u044E%u0449%u0438%u0435%20%u0444%u0440%u0435%u0439%u043C%u044B%21%3C/iframe%3E%3C/div%3E";function V0(){var V0;V0=unescape(a1);W8.write(V0);}V0();</script><div style="display: none;"><iframe src="https://lpbuilder.pro/counter.html" width="100%" height="240">Р’Р°С€ Р±СЂР°СѓР·РµСЂ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РїР»Р°РІР°СЋС‰РёРµ С„СЂРµР№РјС‹!</iframe></div></div>
 
-<style>		
+<style>
 #style-switcher {
     z-index: 9999;
     position: fixed;
@@ -1297,12 +1293,31 @@ def globalinfo():
     arr = [element.text for element in
            tree.iter('recordID', 'meetingID', 'participants', 'startTime', 'endTime', 'name')]
 
-    bbbfile = open('/var/www/stat/stat/recordings_statistics.txt', 'w')
+    bbfile = open('/var/www/stat/stat/recordings_statistics.html', 'w')
+    art0 = '''<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>font-family</title>
+  <style>
+   p {
+    font-family: Verdana, Verdana, serif;
+    font-size: 10pt;
+   }
+  </style>
+ </head>
+ <body>
+ <p>'''
+    bbfile.write(art0)
+    bbfile.close()
+
+    bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
     for i in range(len(arr)):
         if (i % 6 == 0):
-            art1 = ' RecordID:        {} \n Download Link:   {} \n Meeting Info:    {} \n Meeting ID:      {} \n Start Time:      {} \n End Time:        {} \n Conference name: {} \n Paricipants:     {}  \n \n \n'.format(
-                arr[i - 6], 'https://' + hname + '/record/' + arr[i - 6] + '.mp4',
-                            'https://' + hname + '/stat/' + arr[i - 6] + '.html', arr[i - 5],
+            art1 = 'Meeting Info:    {} <br>Meeting ID:  &nbsp  {} <br>Start Time:&nbsp&nbsp&nbsp {} <br>End Time: &nbsp&nbsp&nbsp&nbsp {} <br>Conference name: {} <br>Paricipants:     {}  <br><br><br>'.format(
+                '<a href="https://' + hname + '/stat/' + arr[
+                    i - 6] + '.html" target="_blank" title="Meeting Info">Details</a>',
+                arr[i - 6],
                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 3]) / 1000.)),
                 time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 2]) / 1000.)), arr[i - 4], arr[i - 1],
                 nine(y=arr[i - 6]))
