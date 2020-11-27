@@ -1,0 +1,7 @@
+location /stat {
+  auth_basic "Restricted Access";
+  auth_basic_user_file /etc/nginx/auth.htpasswd; # <-- generated file with your login/password
+  root /var/www/stat; # <-- Site folder + /stat/
+  index index.html index.htm # <-- indexed files
+  expires 1m;
+}
