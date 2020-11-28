@@ -132,6 +132,7 @@ def nine(y):
 
         def csvtohtml():
             a = pd.read_csv('/var/www/stat/stat/' + y + '.csv')
+            a.sort_values(["Name"], axis=0, ascending=True, inplace=True)
             a.to_html('/var/www/stat/stat/' + y + '.htm')
             html_file = a.to_html()
 
