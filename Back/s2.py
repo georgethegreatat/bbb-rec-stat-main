@@ -17,13 +17,15 @@ import socket
 import hashlib
 from pretty_html_table import build_table
 
-shared_secret = "aMiCl8Kj4MK3LpfFyxlWMHfSQYPYvYASImf0sZSZjfk"
-
-base_string = "getRecordings"
 hname = socket.gethostname()
 
-checksumma = base_string + shared_secret
+shared = open('/home/.bbb-key').read()
+shared_secret = shared.strip('\n')
+base_string = "getRecordings"
+
+checksumma = str(base_string) + str(shared_secret)
 chackhashed = hashlib.sha1(checksumma.encode())
+checksum = chackhashed.hexdigest()
 checksum = chackhashed.hexdigest()
 
 
