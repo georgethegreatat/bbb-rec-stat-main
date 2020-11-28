@@ -148,7 +148,7 @@ def nine(y):
                 filecheck.close()
                 return link
             except IOError:
-                no_button = '<a href="/" title="No file for download</a>'
+                no_button = '<a href="/" title="Download mp4">NO FILE FOUND</a>'
                 return no_button
 
         def crthtml():
