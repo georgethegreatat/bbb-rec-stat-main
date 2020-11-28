@@ -1,7 +1,5 @@
 #/bin/bash
 
-git clone https://github.com/georgethegreatat/bbb-rec-stat-main
-
 echo Moving files..
 
 mkdir /var/www/stat/
