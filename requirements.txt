@@ -24,5 +24,5 @@ unattended-upgrades==0.1
 urllib3==1.25.11
 websocket-client==0.57.0
 xmljson==0.2.1
+pretty_html_table==0.9.dev0
 zipp
-pretty_html_table
