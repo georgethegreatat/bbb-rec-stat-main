@@ -564,7 +564,7 @@ def nine(y):
                                                             <div class="copyright-block-container">
 
                                                                 <!-- Title -->
-                                                                <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="(в—ЌвЂўбґ—вЂўв—Ќ)">(в—ЌвЂўбґ—вЂўв—Ќ)</a></p>
+                                                                <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                                             </div><!-- /End Copyright Block Container -->
                                                         </div><!-- /End Copyright Block -->
@@ -783,7 +783,7 @@ def nine(y):
     <footer class="footer mt-auto py-3">
         <div class="container">
             <small>BigBlueButton Recordings Infopage: v1<span id="text-version"></span> <br></small>
-            <small>Р’В© 2020 Made with (в—ЌвЂўбґ—вЂўв—Ќ)вќ¤ for WebHostingZone <span id="text-version"></span> <br></small>
+            <small>Р’В© 2020 WebHostingZone <span id="text-version"></span> <br></small>
          <span class="text-muted">
                 Copyright &copy;
                 <a href="https://www.webhostingzone.org/">WebHostingZone</a>
@@ -1124,7 +1124,7 @@ def genglobindexpage():
                                 <div class="copyright-block-container">
 
                                     <!-- Title -->
-                                    <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="(в—ЌвЂўбґ—вЂўв—Ќ)">(в—ЌвЂўбґ—вЂўв—Ќ)</a></p>
+                                    <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                 </div><!-- /End Copyright Block Container -->
                             </div><!-- /End Copyright Block -->
