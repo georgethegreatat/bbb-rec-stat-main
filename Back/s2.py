@@ -52,6 +52,27 @@ def cleanoldtxt():
         os.remove(path_to_file)
 
 
+def ten(wrt):
+    global cun
+    cun = wrt
+    return wrt
+
+def sttm(mtts):
+    global tmsrt
+    tmsrt = mtts
+    return mtts
+
+
+def ettm(mtte):
+    global kmsrt
+    kmsrt = mtte
+    return mtte
+
+def attm(mtta):
+    global kmtta
+    kmtta = mtta
+    return mtta
+
 def nine(y):
     try:
         tree = xml.etree.ElementTree.parse('/var/bigbluebutton/recording/raw/' + y + '/events.xml')
@@ -117,7 +138,6 @@ def nine(y):
         def mp4check():
             try:
                 link = '<a href="https://' + hname + '/record/' + y + '.mp4" title="Download mp4">Download .mp4</a>'
-                #                link = '<form action="https://' + hname +'/record/' + y + '.mp4" method="get" target="_blank"><button type="submit">Download MP4</button></form>'
                 filecheck = open('/var/www/bigbluebutton-default/record/' + y + '.mp4')
                 filecheck.close()
                 return link
@@ -304,9 +324,10 @@ def nine(y):
 
                                                                 <!-- Description -->
                                                                 <p>BigBlueButton Server: ''' + hname + '''</p>
-                                                                <p>BigBlueButton Meeting Name: Name #1</p>
-                                                                <p>Here you can find all information about your meetings what have been recorded.</p>
-
+                                                                <p><b>Conference Name:</b> ''' + cun + '''</p>
+                                                                <p><b>Start:</b> ''' + tmsrt + ''' | <b>End:</b> ''' + kmsrt + '''</p>
+                                                                <p><b>Participants:</b> ''' + kmtta + '''</p>
+                                                                
                                                                 <!-- Line Separator -->
                                                                 <div class="line-separator"></div>
 
@@ -1318,8 +1339,9 @@ def globalinfo():
                 '<a href="https://' + hname + '/stat/' + arr[
                     i - 6] + '.html" target="_blank" title="Meeting Info">Details</a>',
                 arr[i - 6],
-                time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 3]) / 1000.)),
-                time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 2]) / 1000.)), arr[i - 4], arr[i - 1],
+                sttm(mtts=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 3]) / 1000.))),
+                ettm(mtte=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 2]) / 1000.))),
+                ten(wrt=arr[i - 4]), attm(mtta=arr[i - 1]),
                 nine(y=arr[i - 6]))
             bbbfile.write(art1)
     bbbfile.close()
