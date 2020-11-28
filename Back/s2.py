@@ -15,6 +15,7 @@ import pandas as pd
 import threading
 import socket
 import hashlib
+from pretty_html_table import build_table
 
 shared_secret = "aMiCl8Kj4MK3LpfFyxlWMHfSQYPYvYASImf0sZSZjfk"
 
@@ -133,8 +134,10 @@ def nine(y):
         def csvtohtml():
             a = pd.read_csv('/var/www/stat/stat/' + y + '.csv')
             a.sort_values(["Name"], axis=0, ascending=True, inplace=True)
-            a.to_html('/var/www/stat/stat/' + y + '.htm')
-            html_file = a.to_html()
+            b = build_table(a, 'blue_light')
+            finalfile = open('/var/www/stat/stat/' + y + '.htm', 'w')
+            finalfile.write(b)
+            finalfile.close()
 
         def mp4check():
             try:
