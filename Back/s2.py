@@ -78,7 +78,7 @@ def attm(mtta):
 
 def nine(y):
     try:
-        tree = xml.etree.ElementTree.parse('/var/bigbluebutton/recording/raw/' + y + '/events.xml')
+        tree = xml.etree.ElementTree.parse('/mnt/scalelite-recordings/var/bigbluebutton/stat/' + y + '/events.xml')
         root = tree.getroot()
 
         log = {}
