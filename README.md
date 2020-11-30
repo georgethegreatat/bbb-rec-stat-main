@@ -14,7 +14,7 @@ Deployment for one server (not cluster):
 
 Deployment for Cluster (bbb-scalelite):
 
-Coming Soon...
+1. Add '--mount type=bind,source=/var/www/,target=/var/www' to the 'SCALELITE_NGINX_EXTRA_OPTS=' string in the file /etc/default/scalelite on the load balancer
 
 Deployment playbook for Ansible:
 
