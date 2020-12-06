@@ -26,8 +26,6 @@ base_string = "getRecordings"
 checksumma = str(base_string) + str(shared_secret)
 chackhashed = hashlib.sha1(checksumma.encode())
 checksum = chackhashed.hexdigest()
-checksum = chackhashed.hexdigest()
-
 
 def cleanoldtxt():
     directory = "/var/www/stat/stat"
@@ -1343,7 +1341,6 @@ def globalinfo():
                 nine(y=arr[i - 6]))
             bbbfile.write(art1)
     bbbfile.close()
-
 
 cleanoldtxt()
 
