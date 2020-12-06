@@ -14,7 +14,21 @@ Deployment for one server (not cluster):
 
 Deployment for Cluster (bbb-scalelite):
 
-Coming Soon...
+1. Add '--mount type=bind,source=/var/www/,target=/var/www' to the 'SCALELITE_NGINX_EXTRA_OPTS=' string in the file /etc/default/scalelite on the load balancer
+2. Add to the each one of your cluster nodes the next script:
+> #/bin/bash
+> 
+> cd /var/bigbluebutton/recording/raw/
+> 
+> for i in *;
+> do
+>     mkdir /mnt/scalelite-recordings/var/bigbluebutton/stat/$i;
+>     cp $i/events.xml /mnt/scalelite-recordings/var/bigbluebutton/stat/$i/events.xml
+> done
+
+3. Add the cronjob for nodes:
+> #Copy events.xml to /mnt/ disk every hour, every day
+> 00 9-21 * * * /bin/bash /home/copy_events.sh >> /var/log/copy_events.log
 
 Deployment playbook for Ansible:
 
