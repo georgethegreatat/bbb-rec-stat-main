@@ -54,7 +54,6 @@ def cleanoldtxt():
         path_to_file = os.path.join(directory, file)
         os.remove(path_to_file)
 
-
 def ten(wrt):
     global cun
     cun = wrt
@@ -64,7 +63,6 @@ def sttm(mtts):
     global tmsrt
     tmsrt = mtts
     return mtts
-
 
 def ettm(mtte):
     global kmsrt
@@ -772,11 +770,8 @@ def nine(y):
 
             <p class="lead">Quick overview of all meeting records on BigBlueButton</p>
 
-            <p>BigBlueButton Server: bbb.fondazionemetes.it</p>
-            <p>All detail information about recorded conference (user list , duration , pre-watch etc) you can find by follow the link from "Meeting Info".</p>
-            <p>Also, you are able to download conference user info (inc. login/logout time, durations, names, etc in '.csv' format).</p>
-            <p>All data refreshing every 60 min.</span></p>
-                        <p>Oops... Seems like meeting's data has been gone. Probably meeting is too old.</p>
+            <p>BigBlueButton Server: ''' + y + '''</p>
+            <p>Oops... Seems like meeting's data has been gone. Probably meeting is too old.</p>
         </div>
     </main>
 
@@ -795,7 +790,6 @@ def nine(y):
         nomeetingfile.write(errtext)
         nomeetingfile.close()
         print('Meeting with ID: ' + y + ' not found')
-
 
 def genglobindexpage():
     htmlindex = open('/var/www/stat/stat/index.html', 'w')
@@ -1300,12 +1294,10 @@ $('.switcher').click(function() {
     htmlindex.write(genpage)
     htmlindex.close()
 
-
 def getresultoperation():
     now = datetime.datetime.now()
     print('Script has been running successfully at: ')
     print(now)
-
 
 def globalinfo():
     url = 'https://' + hname + '/bigbluebutton/api/getRecordings?checksum=' + checksum
