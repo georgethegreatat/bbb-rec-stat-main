@@ -10,7 +10,7 @@ For now you able to find there:
 - Watch your conference record onlite at meeting info-page
 
 
-**Deployment for one server (not cluster):
+**Deployment for one server (not cluster):**
 
 1. cd /home
 2. git clone https://github.com/georgethegreatat/bbb-rec-stat-main/
