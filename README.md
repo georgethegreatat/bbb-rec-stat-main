@@ -38,7 +38,7 @@ Deployment for Cluster (bbb-scalelite):
 > done
 
 3. Add the cronjob for nodes:
-> #Copy events.xml to /mnt/ disk every hour, every day
+#Copy events.xml to /mnt/ disk every hour, every day
 > 00 9-21 * * * /bin/bash /home/copy_events.sh >> /var/log/copy_events.log
 
 Deployment playbook for Ansible:
