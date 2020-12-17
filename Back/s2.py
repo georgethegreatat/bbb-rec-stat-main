@@ -5,6 +5,7 @@ import lxml
 from lxml import etree
 import lxml.etree
 import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
 import time
 from xmljson import parker
 from xml.etree.ElementTree import fromstring
@@ -18,14 +19,6 @@ import hashlib
 from pretty_html_table import build_table
 
 hname = socket.gethostname()
-
-shared = open('/home/.bbb-key').read()
-shared_secret = shared.strip('\n')
-base_string = "getRecordings"
-
-checksumma = str(base_string) + str(shared_secret)
-chackhashed = hashlib.sha1(checksumma.encode())
-checksum = chackhashed.hexdigest()
 
 def cleanoldtxt():
     directory = "/var/www/stat/stat"
@@ -52,25 +45,28 @@ def cleanoldtxt():
         path_to_file = os.path.join(directory, file)
         os.remove(path_to_file)
 
+
 def ten(wrt):
     global cun
     cun = wrt
     return wrt
+
 
 def sttm(mtts):
     global tmsrt
     tmsrt = mtts
     return mtts
 
+
 def ettm(mtte):
     global kmsrt
     kmsrt = mtte
     return mtte
 
-def attm(mtta):
-    global kmtta
-    kmtta = mtta
-    return mtta
+def ucnt(cnt):
+    global ucount
+    ucount = cnt
+    return cnt
 
 def nine(y):
     try:
@@ -277,15 +273,15 @@ def nine(y):
                                                                             <ul class="nav navbar-nav navbar-right">
 
                                                                                 <li>
-                                                                                    <a href="https://www.webhostingzone.org/" title="Р“Р»Р°РІРЅР°СЏ">WebHostingZone</a>
+                                                                                    <a href="https://www.webhostingzone.org/" title="Ð â€œÐ Â»Ð Â°Ð Ð†Ð Ð…Ð Â°Ð¡Ð">WebHostingZone</a>
                                                                                 </li>
 
                                                                                 <li>
-                                                                                    <a href="https://www.webhostingzone.org/members/clientarea.php" title="Рћ РєРѕРјРїР°РЅРёРё">Client Area</a>
+                                                                                    <a href="https://www.webhostingzone.org/members/clientarea.php" title="Ð Ñ› Ð Ñ”Ð Ñ•Ð Ñ˜Ð Ñ—Ð Â°Ð Ð…Ð Ñ‘Ð Ñ‘">Client Area</a>
                                                                                 </li>
 
                                                                                 <li>
-                                                                                    <a href="https://www.webhostingzone.org/" title="РЈСЃР»СѓРіРё">Release Notes</a>
+                                                                                    <a href="https://github.com/georgethegreatat/bbb-rec-stat-main/" title="Notes">Release Notes</a>
                                                                                 </li>
 
                                                                             </ul>
@@ -328,8 +324,7 @@ def nine(y):
                                                                 <p>BigBlueButton Server: ''' + hname + '''</p>
                                                                 <p><b>Conference Name:</b> ''' + cun + '''</p>
                                                                 <p><b>Start:</b> ''' + tmsrt + ''' | <b>End:</b> ''' + kmsrt + '''</p>
-                                                                <p><b>Participants:</b> ''' + kmtta + '''</p>
-                                                                
+                                                                <p><b>Participants:</b> ''' + ucount + '''</p>
                                                                 <!-- Line Separator -->
                                                                 <div class="line-separator"></div>
 
@@ -560,7 +555,7 @@ def nine(y):
                                                             <div class="copyright-block-container">
 
                                                                 <!-- Title -->
-                                                                <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
+                                                                <p>Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                                             </div><!-- /End Copyright Block Container -->
                                                         </div><!-- /End Copyright Block -->
@@ -776,7 +771,7 @@ def nine(y):
     <footer class="footer mt-auto py-3">
         <div class="container">
             <small>BigBlueButton Recordings Infopage: v1<span id="text-version"></span> <br></small>
-            <small>Р’В© 2020 WebHostingZone <span id="text-version"></span> <br></small>
+            <small>Â© 2020 WebHostingZone <span id="text-version"></span> <br></small>
          <span class="text-muted">
                 Copyright &copy;
                 <a href="https://www.webhostingzone.org/">WebHostingZone</a>
@@ -788,6 +783,7 @@ def nine(y):
         nomeetingfile.write(errtext)
         nomeetingfile.close()
         print('Meeting with ID: ' + y + ' not found')
+
 
 def genglobindexpage():
     htmlindex = open('/var/www/stat/stat/index.html', 'w')
@@ -919,15 +915,15 @@ def genglobindexpage():
                                                 <ul class="nav navbar-nav navbar-right">
 
                                                     <li>
-                                                        <a href="https://www.webhostingzone.org/" title="Р“Р»Р°РІРЅР°СЏ">WebHostingZone</a>
+                                                        <a href="https://www.webhostingzone.org/" title="Ð â€œÐ Â»Ð Â°Ð Ð†Ð Ð…Ð Â°Ð¡Ð">WebHostingZone</a>
                                                     </li>
 
                                                     <li>
-                                                        <a href="https://www.webhostingzone.org/members/clientarea.php" title="Рћ РєРѕРјРїР°РЅРёРё">Client Area</a>
+                                                        <a href="https://www.webhostingzone.org/members/clientarea.php" title="Ð Ñ› Ð Ñ”Ð Ñ•Ð Ñ˜Ð Ñ—Ð Â°Ð Ð…Ð Ñ‘Ð Ñ‘">Client Area</a>
                                                     </li>
 
                                                     <li>
-                                                        <a href="https://www.webhostingzone.org/" title="РЈСЃР»СѓРіРё">Release Notes</a>
+                                                        <a href="https://github.com/georgethegreatat/bbb-rec-stat-main/" title="Notes">Release Notes</a>
                                                     </li>
 
                                                 </ul>
@@ -1007,10 +1003,10 @@ def genglobindexpage():
                                 <div class="faq-block-container" style="height: 158px;">
 
                                     <!-- Title -->
-                                    <h4>Why not clickable links?</h4>
+                                    <h4>Why doesn't it count users correctly?</h4>
 
                                     <!-- Description -->
-                                    <p>This project is in Development stage. This feature will be added soon.</p>
+                                    <p>BigBlueButton is tracking all users log-in/out moves. Correct count feature will be adding soon.</p>
 
                                 </div><!-- /End FAQ Block Container -->
                             </div><!-- /End FAQ Block -->
@@ -1116,7 +1112,7 @@ def genglobindexpage():
                                 <div class="copyright-block-container">
 
                                     <!-- Title -->
-                                    <p>В© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
+                                    <p>Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                 </div><!-- /End Copyright Block Container -->
                             </div><!-- /End Copyright Block -->
@@ -1292,24 +1288,14 @@ $('.switcher').click(function() {
     htmlindex.write(genpage)
     htmlindex.close()
 
+
 def getresultoperation():
     now = datetime.datetime.now()
     print('Script has been running successfully at: ')
     print(now)
 
+
 def globalinfo():
-    url = 'https://' + hname + '/bigbluebutton/api/getRecordings?checksum=' + checksum
-
-    req = urllib.request.Request(url)
-    resp = urllib.request.urlopen(req)
-    respData = resp.read()
-
-    parser = lxml.etree.XMLParser(recover=True)
-    tree = lxml.etree.fromstring(respData, parser)
-
-    arr = [element.text for element in
-           tree.iter('recordID', 'meetingID', 'participants', 'startTime', 'endTime', 'name')]
-
     bbfile = open('/var/www/stat/stat/recordings_statistics.html', 'w')
     art0 = '''<!DOCTYPE html>
 <html>
@@ -1328,19 +1314,46 @@ def globalinfo():
     bbfile.write(art0)
     bbfile.close()
 
-    bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
-    for i in range(len(arr)):
-        if (i % 6 == 0):
-            art1 = 'Meeting Info:    {} <br>Meeting ID:  &nbsp  {} <br>Start Time:&nbsp&nbsp&nbsp {} <br>End Time: &nbsp&nbsp&nbsp&nbsp {} <br>Conference name: {} <br>Paricipants:     {}  <br><br><br>'.format(
-                '<a href="https://' + hname + '/stat/' + arr[
-                    i - 6] + '.html" target="_blank" title="Meeting Info">Details</a>',
-                arr[i - 6],
-                sttm(mtts=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 3]) / 1000.))),
-                ettm(mtte=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(arr[i - 2]) / 1000.))),
-                ten(wrt=arr[i - 4]), attm(mtta=arr[i - 1]),
-                nine(y=arr[i - 6]))
-            bbbfile.write(art1)
-    bbbfile.close()
+    internal_meeting_id_list = os.listdir("/var/bigbluebutton/recording/raw")
+
+    for internal_meeting_id in internal_meeting_id_list:
+        path = "/var/bigbluebutton/recording/raw/" + internal_meeting_id + "/events.xml"
+
+        tree = ET.parse(path)
+        root = tree.getroot()
+
+        for meeting in root.findall('meeting'):
+            idc = meeting.get('id')
+            namemeeting = meeting.get('name')
+        for metadata in root.findall('metadata'):
+            server = metadata.get('bbb-origin')
+        for event in root.findall("./event[@module='PRESENTATION']"):
+            if event.get('eventname') == 'CreatePresentationPodEvent':
+                Time1 = datetime.datetime.fromtimestamp(int(event.find('timestampUTC').text) / 1000).strftime('%Y-%m-%d | %H:%M:%S')
+        for event in root.findall("./event[@module='PARTICIPANT']"):
+            if event.get('eventname') == 'EndAndKickAllEvent':
+                Time2 = datetime.datetime.fromtimestamp(int(event.find('timestampUTC').text) / 1000).strftime('%Y-%m-%d | %H:%M:%S')
+        for event in root.findall("./event[@module='PARTICIPANT']"):
+            if event.get('eventname') == 'ParticipantJoinEvent':
+              it = 'timestamp'
+              ik = "\n"
+              id = it + ik
+              file = open("/var/bigbluebutton/recording/raw/log.txt", "a")
+              file.write(id)
+              file.close()
+              file = open("/var/bigbluebutton/recording/raw/log.txt", "r")
+              line_count = 0
+              for line in file:
+                  if line != "\n":
+                      line_count += 1
+            file.close()
+        os.remove("/var/bigbluebutton/recording/raw/log.txt")
+        bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
+        art1 = ('Meeting Info: <a href="https://' + hname + '/stat/' + idc + '.html" target="_blank" title="Details">Details</a>' '<br>'
+                'Conference Name: ' + ten(wrt=namemeeting) + '<br>' 'Server: ' + server + '<br>' 'Start Time: ' + sttm(mtts=Time1) + '<br>' 'End Time: ' + ettm(mtte=Time2) + '<br>' + 'Participants: ' +  ucnt(cnt=str(line_count)) + '<br><br><br>')
+        bbbfile.write(str(art1))
+        bbbfile.close()
+        nine(y=idc)
 
 cleanoldtxt()
 
