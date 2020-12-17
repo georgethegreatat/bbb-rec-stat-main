@@ -1,4 +1,4 @@
-BigBlueButton Recordings Statistic
+BBBRSS - BigBlueButton Recordings Statistic Script
 
 Deployment for one server (not cluster):
 
