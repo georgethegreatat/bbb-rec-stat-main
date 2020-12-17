@@ -1,6 +1,8 @@
 BBBRSS - BigBlueButton Recordings Statistic Script.
 
 This script giving you Meetings Stat (if it was recorded) on Web-page with minimal UI. 
+I'm not a developer so I making this script on my own, i know that this is no right way to realise it but in the version2 we'll get the full web-django application with Data Base in docker container to easy deployment way. Let's look what we have for now below.
+
 For now you able to find there:
 - General meeting information (start/end time, conf.name, partisipants nubmer etc)
 - User lists with LogIN, LogOut time and Standing time in conference
