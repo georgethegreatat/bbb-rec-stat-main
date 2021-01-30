@@ -1346,7 +1346,7 @@ def globalinfo():
               for line in file:
                   if line != "\n":
                       line_count += 1
-            file.close()
+              file.close()
         os.remove("/var/bigbluebutton/recording/raw/log.txt")
         bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
         art1 = ('Meeting Info: <a href="https://' + hname + '/stat/' + idc + '.html" target="_blank" title="Details">Details</a>' '<br>'
