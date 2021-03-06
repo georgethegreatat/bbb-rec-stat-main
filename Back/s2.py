@@ -2,9 +2,6 @@ import datetime
 import urllib.request
 import re
 import lxml
-from lxml import etree
-import lxml.etree
-import xml.etree.ElementTree
 import xml.etree.ElementTree as ET
 import time
 from xmljson import parker
@@ -15,7 +12,6 @@ import csv
 import pandas as pd
 import threading
 import socket
-import hashlib
 from pretty_html_table import build_table
 
 hname = socket.gethostname()
@@ -45,6 +41,11 @@ def cleanoldtxt():
         path_to_file = os.path.join(directory, file)
         os.remove(path_to_file)
 
+    filtered_filesn = [file for file in files_in_directory if file.endswith(".csv")]
+    for file in filtered_filesn:
+        path_to_file = os.path.join(directory, file)
+        os.remove(path_to_file)
+
 
 def ten(wrt):
     global cun
@@ -63,72 +64,78 @@ def ettm(mtte):
     kmsrt = mtte
     return mtte
 
-def ucnt(cnt):
-    global ucount
-    ucount = cnt
-    return cnt
+def convert_timestamp(timestamp):
+    return datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
 
 def nine(y):
     try:
-        tree = xml.etree.ElementTree.parse('/var/bigbluebutton/recording/raw/' + y + '/events.xml')
-        root = tree.getroot()
+        archived_files_id_list = os.listdir("/var/bigbluebutton/recording/raw")
 
-        log = {}
-        joins = []
-        leaves = []
+        for archived_files_id in archived_files_id_list:
 
-        for event in root.findall("./event[@module='PARTICIPANT']"):
-            time = event.find('timestampUTC').text
-            srm1 = int(time)
-            srm = srm1 / 1000
-            time_new = datetime.datetime.fromtimestamp(srm).strftime('%H:%M:%S')
-            time_duration1 = datetime.datetime.fromtimestamp(srm)
-            time_duration2 = time_duration1.timestamp()
-            time_duration = time_duration2
-            if event.get('eventname') == 'ParticipantJoinEvent':
-                joins.append({'name': event.find('name').text,
-                              'time': time_new,
-                              'time2': time_duration,
-                              'id': event.find('userId').text})
-            if event.get('eventname') == 'ParticipantLeftEvent':
-                leaves.append({
-                    'time': time_new,
-                    'time2': time_duration,
-                    'id': event.find('userId').text
-                })
-            if event.get('eventname') == 'EndAndKickAllEvent':
-                meeting_end = time_new
-                meeting_endp = time_duration
+            root = ET.parse("/var/bigbluebutton/recording/raw/" + y + '/events.xml').getroot()
 
-        for jn in joins:
-            username = jn['name']
-            lgn = jn['time']
-            lgt = meeting_end
-            lgnd = jn['time2']
-            lgtd = meeting_endp
-            oper = lgtd - lgnd
-            func_oper = datetime.datetime.utcfromtimestamp(oper).strftime('%H:%M:%S')
-            for j, lv in enumerate(leaves):
-                if jn['id'] == lv['id']:
-                    lgt = lv['time']
-                    leaves.pop(j)
-                    break
-            log[lgn] = dict(TimeLogin=lgn,
-                            Name=username,
-                            TimeLogout=lgt,
-                            Standing=func_oper)
+            visit_log = {}
+            joins, leaves = [], []
 
-        with open('/var/www/stat/stat/' + y + '.json', 'w') as f:
-            json.dump([log[t] for t in sorted(log)], f, ensure_ascii=True, sort_keys=True, indent=4, default=str)
+            # registering events of interest
+            for event in root.findall("./event[@module='PARTICIPANT']"):
+                time = int(event.find('timestampUTC').text) // 1000
+                if event.get('eventname') == 'ParticipantJoinEvent':
+                    joins.append({'time': time,
+                                  'name': event.find('name').text,
+                                  'id': event.find('userId').text})
+                if event.get('eventname') == 'ParticipantLeftEvent':
+                    leaves.append({'time': time,
+                                   'id': event.find('userId').text})
+                if event.get('eventname') == 'EndAndKickAllEvent':
+                    meeting_end = time
+
+            # compiling records by user
+            for jn in joins:
+                username, lgn = jn['name'], jn['time']
+                lgt = meeting_end
+
+                # finding who's left before meeting end
+                for i, lv in enumerate(leaves):
+                    if jn['id'] == lv['id']:
+                        lgt = lv['time']
+                        leaves.pop(i)
+                        break
+
+                duration = round((lgt - lgn) / 60)
+                user_standing = "%d:%02d"%(divmod(duration, 60))
+
+                if visit_log.get(username):
+                    visit_log[username]['TimeLogout'] = convert_timestamp(lgt)
+                    visit_log[username]['Standing'] = user_standing
+#                    visit_log[username]['number_of_visits'] += 1
+                else:
+                   visit_log[username] = dict(
+                       Name=username,
+                       TimeLogin=convert_timestamp(lgn),
+                       TimeLogout=convert_timestamp(lgt),
+                       Standing=user_standing
+            )
+
+
+            # saving the log as a JSON to file
+            with open('/var/www/stat/stat/' + y + '.json', 'w') as f:
+                json.dump([visit_log[u] for u in sorted(visit_log)], f, ensure_ascii=True, sort_keys=True, indent=4, default=str)
+
 
         def jsontocsv():
             jsoncsv = pd.read_json(r'/var/www/stat/stat/' + y + '.json')
             jsoncsv.to_csv(r'/var/www/stat/stat/' + y + '.csv', index=None)
 
         def csvtohtml():
+            print(y)
+#            try:
             a = pd.read_csv('/var/www/stat/stat/' + y + '.csv')
             a.sort_values(["Name"], axis=0, ascending=True, inplace=True)
             b = build_table(a, 'blue_light')
+#            except:
+#                b = 'no users on this meeting'
             finalfile = open('/var/www/stat/stat/' + y + '.htm', 'w')
             finalfile.write(b)
             finalfile.close()
@@ -144,6 +151,12 @@ def nine(y):
                 return no_button
 
         def crthtml():
+
+            filepcsvt = open("/var/www/stat/stat/" + y + ".csv")
+            numlinee = len(filepcsvt.readlines())
+            trany = numlinee - 1
+            tran = str(trany)
+
             filehtml = open('/var/www/stat/stat/' + y + '.html', 'w')
             alltext = '''<!DOCTYPE html>
                             <!--[if IE 9 ]>    <html lang="ru" class="no-js ie9"> <![endif]-->
@@ -273,11 +286,11 @@ def nine(y):
                                                                             <ul class="nav navbar-nav navbar-right">
 
                                                                                 <li>
-                                                                                    <a href="https://www.webhostingzone.org/" title="Ð â€œÐ Â»Ð Â°Ð Ð†Ð Ð…Ð Â°Ð¡Ð">WebHostingZone</a>
+                                                                                    <a href="https://www.webhostingzone.org/" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â">WebHostingZone</a>
                                                                                 </li>
 
                                                                                 <li>
-                                                                                    <a href="https://www.webhostingzone.org/members/clientarea.php" title="Ð Ñ› Ð Ñ”Ð Ñ•Ð Ñ˜Ð Ñ—Ð Â°Ð Ð…Ð Ñ‘Ð Ñ‘">Client Area</a>
+                                                                                    <a href="https://www.webhostingzone.org/members/clientarea.php" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒâ€¹Ã…â€œÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“">Client Area</a>
                                                                                 </li>
 
                                                                                 <li>
@@ -324,7 +337,7 @@ def nine(y):
                                                                 <p>BigBlueButton Server: ''' + hname + '''</p>
                                                                 <p><b>Conference Name:</b> ''' + cun + '''</p>
                                                                 <p><b>Start:</b> ''' + tmsrt + ''' | <b>End:</b> ''' + kmsrt + '''</p>
-                                                                <p><b>Participants:</b> ''' + ucount + '''</p>
+                                                                <p><b>Participants:</b> ''' + tran + '''</p>
                                                                 <!-- Line Separator -->
                                                                 <div class="line-separator"></div>
 
@@ -555,7 +568,7 @@ def nine(y):
                                                             <div class="copyright-block-container">
 
                                                                 <!-- Title -->
-                                                                <p>Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
+                                                                <p>ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                                             </div><!-- /End Copyright Block Container -->
                                                         </div><!-- /End Copyright Block -->
@@ -741,7 +754,6 @@ def nine(y):
         tr4.join()
         tr2.join()
 
-
     except FileNotFoundError:
         nomeetingfile = open('/var/www/stat/stat/' + y + '.html', 'w')
         errtext = '''<!DOCTYPE html>
@@ -771,7 +783,7 @@ def nine(y):
     <footer class="footer mt-auto py-3">
         <div class="container">
             <small>BigBlueButton Recordings Infopage: v1<span id="text-version"></span> <br></small>
-            <small>Â© 2020 WebHostingZone <span id="text-version"></span> <br></small>
+            <small>ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2020 WebHostingZone <span id="text-version"></span> <br></small>
          <span class="text-muted">
                 Copyright &copy;
                 <a href="https://www.webhostingzone.org/">WebHostingZone</a>
@@ -915,11 +927,11 @@ def genglobindexpage():
                                                 <ul class="nav navbar-nav navbar-right">
 
                                                     <li>
-                                                        <a href="https://www.webhostingzone.org/" title="Ð â€œÐ Â»Ð Â°Ð Ð†Ð Ð…Ð Â°Ð¡Ð">WebHostingZone</a>
+                                                        <a href="https://www.webhostingzone.org/" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â">WebHostingZone</a>
                                                     </li>
 
                                                     <li>
-                                                        <a href="https://www.webhostingzone.org/members/clientarea.php" title="Ð Ñ› Ð Ñ”Ð Ñ•Ð Ñ˜Ð Ñ—Ð Â°Ð Ð…Ð Ñ‘Ð Ñ‘">Client Area</a>
+                                                        <a href="https://www.webhostingzone.org/members/clientarea.php" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒâ€¹Ã…â€œÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“">Client Area</a>
                                                     </li>
 
                                                     <li>
@@ -1112,7 +1124,7 @@ def genglobindexpage():
                                 <div class="copyright-block-container">
 
                                     <!-- Title -->
-                                    <p>Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
+                                    <p>ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                 </div><!-- /End Copyright Block Container -->
                             </div><!-- /End Copyright Block -->
@@ -1333,27 +1345,24 @@ def globalinfo():
         for event in root.findall("./event[@module='PARTICIPANT']"):
             if event.get('eventname') == 'EndAndKickAllEvent':
                 Time2 = datetime.datetime.fromtimestamp(int(event.find('timestampUTC').text) / 1000).strftime('%Y-%m-%d | %H:%M:%S')
-        for event in root.findall("./event[@module='PARTICIPANT']"):
-            if event.get('eventname') == 'ParticipantJoinEvent':
-              it = 'timestamp'
-              ik = "\n"
-              id = it + ik
-              file = open("/var/bigbluebutton/recording/raw/log.txt", "a")
-              file.write(id)
-              file.close()
-              file = open("/var/bigbluebutton/recording/raw/log.txt", "r")
-              line_count = 0
-              for line in file:
-                  if line != "\n":
-                      line_count += 1
-              file.close()
-        os.remove("/var/bigbluebutton/recording/raw/log.txt")
+
+
+        ten(wrt=namemeeting)
+        sttm(mtts=Time1)
+        ettm(mtte=Time2)
+        nine(y=idc)
+
+        filepcsv = open("/var/www/stat/stat/" + idc + ".csv")
+        numline = len(filepcsv.readlines())
+        pumpy = numline - 1
+        pump = str(pumpy)
+
         bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
         art1 = ('Meeting Info: <a href="https://' + hname + '/stat/' + idc + '.html" target="_blank" title="Details">Details</a>' '<br>'
-                'Conference Name: ' + ten(wrt=namemeeting) + '<br>' 'Server: ' + server + '<br>' 'Start Time: ' + sttm(mtts=Time1) + '<br>' 'End Time: ' + ettm(mtte=Time2) + '<br>' + 'Participants: ' +  ucnt(cnt=str(line_count)) + '<br><br><br>')
+                'Conference Name: ' + ten(wrt=namemeeting) + '<br>' 'Server: ' + server + '<br>' 'Start Time: ' + sttm(mtts=Time1) + '<br>' 'End Time: ' + ettm(mtte=Time2) + '<br>' + 'Participants: ' + pump + '<br><br><br>')
         bbbfile.write(str(art1))
         bbbfile.close()
-        nine(y=idc)
+
 
 cleanoldtxt()
 
@@ -1362,3 +1371,4 @@ globalinfo()
 genglobindexpage()
 
 getresultoperation()
+
