@@ -10,10 +10,13 @@ import threading
 import socket
 from pretty_html_table import build_table
 
-# Get server hostname
+# Environment variables
+ui_logo_link = "https://www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png"
+fb_link = "https://www.facebook.com/WebHostingZone/"
+twitter_link = "https://twitter.com/WebHostingZone"
 hname = socket.gethostname()
 
-# Delete the old data
+# Delete the old *.txt files before start
 def cleanoldtxt():
     directory = "/var/www/stat/stat"
 
@@ -24,38 +27,16 @@ def cleanoldtxt():
         path_to_file = os.path.join(directory, file)
         os.remove(path_to_file)
 
-#    filtered_filesn = [file for file in files_in_directory if file.endswith(".htm")]
-#    for file in filtered_filesn:
-#        path_to_file = os.path.join(directory, file)
-#        os.remove(path_to_file)
-
-#    filtered_filesn = [file for file in files_in_directory if file.endswith(".html")]
-#    for file in filtered_filesn:
-#        path_to_file = os.path.join(directory, file)
-#        os.remove(path_to_file)
-
-#    filtered_filesn = [file for file in files_in_directory if file.endswith(".json")]
-#    for file in filtered_filesn:
-#        path_to_file = os.path.join(directory, file)
-#        os.remove(path_to_file)
-
-#    filtered_filesn = [file for file in files_in_directory if file.endswith(".csv")]
-#    for file in filtered_filesn:
-#        path_to_file = os.path.join(directory, file)
-#        os.remove(path_to_file)
-
 # Grobal variables define
 def ten(wrt):
     global cun
     cun = wrt
     return wrt
 
-
 def sttm(mtts):
     global tmsrt
     tmsrt = mtts
     return mtts
-
 
 def ettm(mtte):
     global kmsrt
@@ -78,14 +59,15 @@ def convert_timestamp(timestamp):
 
 # General data function; parsing userlist from events.xml and creating json with it; converting to csv and html;
 def nine(y):
-    if os.path.isfile("/data/brick1/var/bigbluebutton/raw/" + y + "/events.xml"):
+    global meeting_end
+    if os.path.isfile("/var/bigbluebutton/recording/raw/" + y + "/events.xml"):
         if os.path.isfile("/var/www/stat/stat/" + y + ".htm"):
             print("File already in the folder. ID: ", y)
         else:
-            archived_files_id_list = os.listdir("/data/brick1/var/bigbluebutton/raw")
+            archived_files_id_list = os.listdir("/var/bigbluebutton/recording/raw")
             for archived_files_id in archived_files_id_list:
 
-                root = ET.parse("/data/brick1/var/bigbluebutton/raw/" + y + '/events.xml').getroot()
+                root = ET.parse("/var/bigbluebutton/recording/raw/" + y + '/events.xml').getroot()
 
                 visit_log = {}
                 joins, leaves = [], []
@@ -173,572 +155,580 @@ def nine(y):
                                                 ============================================================================ --><head>
 
 
-                                                    <!-- Basic Info
-                                                    ======================================================================== -->
-                                                    <title>BigBlueButton Meetings Statistic</title>
-                                                    <meta charset="utf-8">
+                                    <!-- Basic Info
+                                    ======================================================================== -->
+                                    <title>BigBlueButton Meetings Statistic</title>
+                                    <meta charset="utf-8">
 
-                                                    <!-- Mobile Configurations
-                                                    ======================================================================== -->
-                                                    <meta name="apple-mobile-web-app-capable" content="yes">
-                                                    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-                                                    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+                                    <!-- Mobile Configurations
+                                    ======================================================================== -->
+                                    <meta name="apple-mobile-web-app-capable" content="yes">
+                                    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-                                                    <!-- fav and icons for Mobile
-                                                    ======================================================================== -->
-                                                    <link rel="shortcut icon" href="https://www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="57x57" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="60x60" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="72x72" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="76x76" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="114x114" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="120x120" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="144x144" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="152x152" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
-                                                    <link rel="apple-touch-icon" sizes="180x180" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <!-- fav and icons for Mobile
+                                    ======================================================================== -->
+                                    <link rel="shortcut icon" href="''' + ui_logo_link + '''">
+                                    <link rel="apple-touch-icon" sizes="57x57" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="60x60" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="72x72" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="76x76" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="114x114" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="120x120" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="144x144" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="152x152" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+                                    <link rel="apple-touch-icon" sizes="180x180" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
 
-                                                    <!-- Google Fonts
-                                                    ======================================================================== -->
-                                                    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600|Roboto:100,100i,300,300i,400,400i,500,700&amp;subset=cyrillic" rel="stylesheet"> -->
+                                    <!-- Google Fonts
+                                    ======================================================================== -->
+                                    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600|Roboto:100,100i,300,300i,400,400i,500,700&amp;subset=cyrillic" rel="stylesheet"> -->
 
-                                                    <!--  CSS Files
-                                                    ======================================================================== -->
-                                                    <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap.min.css">
-                                                    <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
-                                                    <link rel="stylesheet" href="css/social-icons.css">
-                                                    <link rel="stylesheet" href="js/plugins/swiper/css/swiper.min.css">
-                                                    <link rel="stylesheet" href="js/plugins/mediaelement/css/mediaelementplayer.min.css">
-                                                    <link rel="stylesheet" href="js/plugins/fancybox/jquery.fancybox.min.css">
-                                                    <link rel="stylesheet" href="js/plugins/wow/css/animate.min.css">
-                                                    <link rel="stylesheet" href="css/style.css">
-                                                    <link id="changeable-colors" rel="stylesheet" href="css/css/blue.css">
-                                                    <link rel="stylesheet" href="css/responsive.css">
+                                    <!--  CSS Files
+                                    ======================================================================== -->
+                                    <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap.min.css">
+                                    <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+                                    <link rel="stylesheet" href="css/social-icons.css">
+                                    <link rel="stylesheet" href="js/plugins/swiper/css/swiper.min.css">
+                                    <link rel="stylesheet" href="js/plugins/mediaelement/css/mediaelementplayer.min.css">
+                                    <link rel="stylesheet" href="js/plugins/fancybox/jquery.fancybox.min.css">
+                                    <link rel="stylesheet" href="js/plugins/wow/css/animate.min.css">
+                                    <link rel="stylesheet" href="css/style.css">
+                                    <link id="changeable-colors" rel="stylesheet" href="css/css/blue.css">
+                                    <link rel="stylesheet" href="css/responsive.css">
 
-                                                    <!--  Head JS Libs
-                                                    ======================================================================== -->
-                                                    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://mc.yandex.ru/metrika/tag.js"></script><script src="js/vendor/modernizr-custom.js"></script>
+                                    <!--  Head JS Libs
+                                    ======================================================================== -->
+                                    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://mc.yandex.ru/metrika/tag.js"></script><script src="js/vendor/modernizr-custom.js"></script>
 
 
-                                                </head><!-- /End head -->
+                                </head><!-- /End head -->
 
 
 
 
-                                                <!-- body
-                                                ============================================================================ -->
-                                                <body class="nbs-10" data-spy="scroll" data-target=".header-menu-container" data-offset="61">
+                                <!-- body
+                                ============================================================================ -->
+                                <body class="nbs-10" data-spy="scroll" data-target=".header-menu-container" data-offset="61">
 
 
 
 
-                                                    <!-- UP Button
-                                                    ======================================================================== -->
-                                                    <div id="up-button"><a href="#" title="To Top"><i class="fa fa-angle-up"></i></a></div>
+                                    <!-- UP Button
+                                    ======================================================================== -->
+                                    <div id="up-button"><a href="#" title="To Top"><i class="fa fa-angle-up"></i></a></div>
 
 
 
 
-                                                    <!-- Main Wrapper
-                                                    ======================================================================== -->
-                                                    <div id="main-wrapper">
+                                    <!-- Main Wrapper
+                                    ======================================================================== -->
+                                    <div id="main-wrapper">
 
-                                                    <!-- Header 1
-                                                        ==================================================================== -->
-                                                        <!-- /End Header 1 --><!-- Content 1
-                                                        ==================================================================== -->
-                                                        <!-- /End Content 1 --><!-- FAQ 3
-                                                        ==================================================================== -->
-                                                        <!-- /End FAQ 3 --><!-- Social 1
-                                                        ==================================================================== -->
-                                                        <!-- /End Social 1 --><!-- Header 1
-                                                        ==================================================================== -->
-                                                        <header id="header-section-1" class="header-section header-style-1">
-                                                            <!-- Header Section Container -->
-                                                            <div class="header-section-container">
+                                    <!-- Header 1
+                                        ==================================================================== -->
+                                        <!-- /End Header 1 --><!-- Content 1
+                                        ==================================================================== -->
+                                        <!-- /End Content 1 --><!-- FAQ 3
+                                        ==================================================================== -->
+                                        <!-- /End FAQ 3 --><!-- Social 1
+                                        ==================================================================== -->
+                                        <!-- /End Social 1 --><!-- Header 1
+                                        ==================================================================== -->
+                                        <header id="header-section-1" class="header-section header-style-1">
+                                            <!-- Header Section Container -->
+                                            <div class="header-section-container">
 
 
-                                                                <!-- Header Menu -->
-                                                                <div class="header-menu">
-                                                                    <!-- Header Menu Container -->
-                                                                    <div class="header-menu" style="height: 80px;"><div class="header-menu-container header-menu-stuck">
+                                                <!-- Header Menu -->
+                                                <div class="header-menu">
+                                                    <!-- Header Menu Container -->
+                                                    <div class="header-menu" style="height: 80px;"><div class="header-menu-container header-menu-stuck">
 
 
-                                                                        <!-- Navbar -->
-                                                                        <nav class="navbar">
-                                                                            <!-- container -->
-                                                                            <div class="container">
-                                                                                <!-- row -->
-                                                                                <div class="row">
-                                                                                    <!-- col-md-12 -->
-                                                                                    <div class="col-md-12">
+                                                        <!-- Navbar -->
+                                                        <nav class="navbar">
+                                                            <!-- container -->
+                                                            <div class="container">
+                                                                <!-- row -->
+                                                                <div class="row">
+                                                                    <!-- col-md-12 -->
+                                                                    <div class="col-md-12">
 
 
-                                                                                        <!-- Navbar Header -->
-                                                                                        <div class="navbar-header">
+                                                                        <!-- Navbar Header -->
+                                                                        <div class="navbar-header">
 
-                                                                                            <!-- Logo -->
-                                                                                            <a href="/stat" class="navbar-brand" title="LPB">
-                                                                                                <img src="https://''' + hname + '''/stat/GEL.png" alt="LPB Logo">
-                                                                                            </a><!-- /End Logo -->
+                                                                            <!-- Logo -->
+                                                                            <a href="/stat" class="navbar-brand" title="LPB">
+                                                                                <img src="https://www.webhostingzone.org/wp-content/uploads/2020/06/logo.png" alt="LPB Logo">
+                                                                            </a><!-- /End Logo -->
 
-                                                                                            <!-- Toggle Menu Button -->
-                                                                                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                                                                                                Menu <span><i class="lines"></i></span>
-                                                                                            </button><!-- /End Toggle Menu Button -->
+                                                                            <!-- Toggle Menu Button -->
+                                                                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                                                                                Menu <span><i class="lines"></i></span>
+                                                                            </button><!-- /End Toggle Menu Button -->
 
-                                                                                        </div><!-- /End Navbar Header -->
+                                                                        </div><!-- /End Navbar Header -->
 
 
-                                                                                        <!-- Navbar Collapse ( Menu ) -->
-                                                                                        <div class="collapse navbar-collapse">
-                                                                                            <ul class="nav navbar-nav navbar-right">
+                                                                        <!-- Navbar Collapse ( Menu ) -->
+                                                                        <div class="collapse navbar-collapse">
+                                                                            <ul class="nav navbar-nav navbar-right">
 
-                                                                                                <li>
-                                                                                                    <a href="https://c-gel.it/" title="C-GEL">c-gel.it</a>
-                                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="https://www.webhostingzone.org/" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â">WebHostingZone</a>
+                                                                                </li>
 
-                                                                                            </ul>
-                                                                                        </div><!-- /End Navbar Collapse ( Menu ) -->
+                                                                                <li>
+                                                                                    <a href="https://www.webhostingzone.org/members/clientarea.php" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒâ€¹Ã…â€œÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“">Client Area</a>
+                                                                                </li>
 
+                                                                                <li>
+                                                                                    <a href="https://github.com/georgethegreatat/bbb-rec-stat-main/" title="Notes">Release Notes</a>
+                                                                                </li>
 
-                                                                                    </div><!-- /End col-md-12 -->
-                                                                                </div><!-- /End row -->
-                                                                            </div><!-- /End container -->
-                                                                        </nav><!-- /End Navbar -->
+                                                                            </ul>
+                                                                        </div><!-- /End Navbar Collapse ( Menu ) -->
 
 
-                                                                    </div></div><!-- /End Header Menu Container -->
-                                                                </div><!-- /End Header Menu -->
+                                                                    </div><!-- /End col-md-12 -->
+                                                                </div><!-- /End row -->
+                                                            </div><!-- /End container -->
+                                                        </nav><!-- /End Navbar -->
 
 
-                                                            </div><!-- /End Header Section Container -->
-                                                        </header><!-- /End Header 1 --><!-- Content 1
-                                                        ==================================================================== -->
-                                                        <div id="content-section-1" class="content-section white-section">
-                                                            <!-- Section Container -->
-                                                            <div class="section-container">
+                                                    </div></div><!-- /End Header Menu Container -->
+                                                </div><!-- /End Header Menu -->
 
 
-                                                                <!-- container -->
-                                                                <div class="container">
-                                                                    <!-- row -->
-                                                                    <div class="row">
+                                            </div><!-- /End Header Section Container -->
+                                        </header><!-- /End Header 1 --><!-- Content 1
+                                        ==================================================================== -->
+                                        <div id="content-section-1" class="content-section white-section">
+                                            <!-- Section Container -->
+                                            <div class="section-container">
 
 
-                                                                        <!-- Title Block -->
-                                                                        <div class="col-lg-10 col-lg-offset-1 col-md-12 title-block content-block-container">
-                                                                            <!-- Title Block Container -->
-                                                                            <div class="title-block-container text-center">
+                                                <!-- container -->
+                                                <div class="container">
+                                                    <!-- row -->
+                                                    <div class="row">
 
-                                                                                <!-- Title -->
-                                                                                <h2>BigBlueButton Meetings Statistic</h2>
 
-                                                                                <!-- Description -->
-                                                                                <p>BigBlueButton Server: ''' + hname + '''</p>
-                                                                                <p><b>Conference Name:</b> ''' + cun + '''</p>
-                                                                                <p><b>Start:</b> ''' + tmsrt + ''' | <b>End:</b> ''' + kmsrt + '''</p>
-                                                                                <p><b>Participants:</b> ''' + tran + ''' | <b>Moderator:</b> ''' + muserm + '''</p>
-                                                                                <p><b>Moderator Email:</b> ''' + emailmod + '''</p>
-                                                                                <!-- Line Separator -->
-                                                                                <div class="line-separator"></div>
+                                                        <!-- Title Block -->
+                                                        <div class="col-lg-10 col-lg-offset-1 col-md-12 title-block content-block-container">
+                                                            <!-- Title Block Container -->
+                                                            <div class="title-block-container text-center">
 
-                                                                                <h4>Download Content:</h4>
+                                                                <!-- Title -->
+                                                                <h2>BigBlueButton Meetings Statistic</h2>
 
+                                                                <!-- Description -->
+                                                                <p>BigBlueButton Server: ''' + hname + '''</p>
+                                                                <p><b>Conference Name:</b> ''' + cun + '''</p>
+                                                                <p><b>Start:</b> ''' + tmsrt + ''' | <b>End:</b> ''' + kmsrt + '''</p>
+                                                                <p><b>Participants:</b> ''' + tran + ''' | <b>Moderator:</b> ''' + muserm + '''</p>
+                                                                <p><b>Moderator Email:</b> ''' + emailmod + '''</p>
+                                                                <!-- Line Separator -->
+                                                                <div class="line-separator"></div>
 
+                                                                <h4>Download Content:</h4>
 
-                                                                            </div><!-- /End Title Block Container -->
-                                                                        </div><!-- /End Title Block -->
 
 
+                                                            </div><!-- /End Title Block Container -->
+                                                        </div><!-- /End Title Block -->
 
-                                                                        <!-- Content Block -->
-                                                                        <div class="col-md-4 content-block">
-                                                                            <!-- Content Block Container -->
-                                                                            <div class="content-block-container" style="height: 200px;">
 
-                                                                                <!-- Icon -->
-                                                                                <i class="fa fa-diamond circle-icon-block circle-icon-block-lg"></i>
 
-                                                                                <!-- Title -->
-                                                                                <h4>''' + mp4check() + '''</h4>
+                                                        <!-- Content Block -->
+                                                        <div class="col-md-4 content-block">
+                                                            <!-- Content Block Container -->
+                                                            <div class="content-block-container" style="height: 200px;">
 
-                                                                                <!-- Description -->
-                                                                                <p>Download your record of this meeting in .mp4 format.</p>
+                                                                <!-- Icon -->
+                                                                <i class="fa fa-diamond circle-icon-block circle-icon-block-lg"></i>
 
-                                                                            </div><!-- /End Content Block Container -->
-                                                                        </div><!-- /End Content Block -->
+                                                                <!-- Title -->
+                                                                <h4>''' + mp4check() + '''</h4>
 
+                                                                <!-- Description -->
+                                                                <p>Download your record of this meeting in .mp4 format.</p>
 
-                                                                        <!-- Content Block -->
-                                                                        <div class="col-md-4 content-block">
-                                                                            <!-- Content Block Container -->
-                                                                            <div class="content-block-container" style="height: 200px;">
+                                                            </div><!-- /End Content Block Container -->
+                                                        </div><!-- /End Content Block -->
 
-                                                                                <!-- Icon -->
-                                                                                <i class="fa fa-code circle-icon-block circle-icon-block-lg"></i>
 
-                                                                                <!-- Title -->
-                                                                                <h4><a href="https://''' + hname + '/stat/' + y + '''.htm" title="Download HTML">Download .hml</a></h4>
+                                                        <!-- Content Block -->
+                                                        <div class="col-md-4 content-block">
+                                                            <!-- Content Block Container -->
+                                                            <div class="content-block-container" style="height: 200px;">
 
-                                                                                <!-- Description -->
-                                                                                <p>Download HTML file with your User List for input to your sites easy and fast.</p>
+                                                                <!-- Icon -->
+                                                                <i class="fa fa-code circle-icon-block circle-icon-block-lg"></i>
 
-                                                                            </div><!-- /End Content Block Container -->
-                                                                        </div><!-- /End Content Block -->
+                                                                <!-- Title -->
+                                                                <h4><a href="https://''' + hname + '/stat/' + y + '''.htm" title="Download HTML">Download .hml</a></h4>
 
+                                                                <!-- Description -->
+                                                                <p>Download HTML file with your User List for input to your sites easy and fast.</p>
 
-                                                                        <!-- Content Block -->
-                                                                        <div class="col-md-4 content-block">
-                                                                            <!-- Content Block Container -->
-                                                                            <div class="content-block-container" style="height: 200px;">
+                                                            </div><!-- /End Content Block Container -->
+                                                        </div><!-- /End Content Block -->
 
-                                                                                <!-- Icon -->
-                                                                                <i class="fa fa-bar-chart circle-icon-block circle-icon-block-lg"></i>
 
-                                                                                <!-- Title -->
-                                                                                <h4><a href="https://''' + hname + '/stat/' + y + '''.csv" title="Analysis">Download .csv</a></h4>
+                                                        <!-- Content Block -->
+                                                        <div class="col-md-4 content-block">
+                                                            <!-- Content Block Container -->
+                                                            <div class="content-block-container" style="height: 200px;">
 
-                                                                                <!-- Description -->
-                                                                                <p>Download user list of this meeting in CSV file for attach into your CRM, LMS etc system for Analytics.</p>
+                                                                <!-- Icon -->
+                                                                <i class="fa fa-bar-chart circle-icon-block circle-icon-block-lg"></i>
 
-                                                                            </div><!-- /End Content Block Container -->
-                                                                        </div><!-- /End Content Block -->														
+                                                                <!-- Title -->
+                                                                <h4><a href="https://''' + hname + '/stat/' + y + '''.csv" title="Analysis">Download .csv</a></h4>
 
-                                                                        <center><h4>User List:</h4></center>
-                                                                        <center><div class="line-separator"></div></center>
+                                                                <!-- Description -->
+                                                                <p>Download user list of this meeting in CSV file for attach into your CRM, LMS etc system for Analytics.</p>
 
-                                                                        <iframe src="https://''' + hname + '/stat/' + y + '''.htm" width="1200" height="700" frameborder=0 id="frame"></iframe>
+                                                            </div><!-- /End Content Block Container -->
+                                                        </div><!-- /End Content Block -->														
 
+                                                        <center><h4>User List:</h4></center>
+                                                        <center><div class="line-separator"></div></center>
 
-                                                                    </div><!-- /End row -->
-                                                                </div><!-- /End container -->
+                                                        <iframe src="https://''' + hname + '/stat/' + y + '''.htm" width="1200" height="700" frameborder=0 id="frame"></iframe>
 
 
-                                                            </div><!-- /End Section Container -->
-                                                        </div><!-- /End Content 1 --><!-- FAQ 3
-                                                        ==================================================================== -->
-                                                        <div id="faq-section-3" class="faq-section white-section">
-                                                            <!-- Section Container -->
-                                                            <div class="section-container">
+                                                    </div><!-- /End row -->
+                                                </div><!-- /End container -->
 
 
-                                                                <!-- container -->
-                                                                <div class="container">
-                                                                    <!-- row -->
-                                                                    <div class="row">
+                                            </div><!-- /End Section Container -->
+                                        </div><!-- /End Content 1 --><!-- FAQ 3
+                                        ==================================================================== -->
+                                        <div id="faq-section-3" class="faq-section white-section">
+                                            <!-- Section Container -->
+                                            <div class="section-container">
 
 
-                                                                        <!-- Title Block -->
-                                                                        <div class="col-lg-10 col-lg-offset-1 col-md-12 title-block">
-                                                                            <!-- Title Block Container -->
-                                                                            <div class="title-block-container text-center">
+                                                <!-- container -->
+                                                <div class="container">
+                                                    <!-- row -->
+                                                    <div class="row">
 
-                                                                                <!-- Title -->
-                                                                                <h2>WATCH YOU RECORD ONLINE</h2>
 
-                                                                                <!-- Description -->
-                                                                                <p>Here you can watch your conference record after record compile process.</p>
+                                                        <!-- Title Block -->
+                                                        <div class="col-lg-10 col-lg-offset-1 col-md-12 title-block">
+                                                            <!-- Title Block Container -->
+                                                            <div class="title-block-container text-center">
 
-                                                                                <!-- Line Separator -->
-                                                                                <div class="line-separator"></div>
+                                                                <!-- Title -->
+                                                                <h2>WATCH YOU RECORD ONLINE</h2>
 
-                                                                                <!-- Video frame -->
-                                                                                <center><iframe width="800" height="550" src="https://''' + hname + '/playback/presentation/2.0/playback.html?meetingId=' + y + '''" allowfullscreen="allowfullscreen"></iframe></center>
+                                                                <!-- Description -->
+                                                                <p>Here you can watch your conference record after record compile process.</p>
 
-                                                                                <div class="line-separator"></div>
+                                                                <!-- Line Separator -->
+                                                                <div class="line-separator"></div>
 
-                                                                                <h4>QUICK F.A.Q.</h2>
+                                                                <!-- Video frame -->
+                                                                <center><iframe width="800" height="550" src="https://''' + hname + '/playback/presentation/2.0/playback.html?meetingId=' + y + '''" allowfullscreen="allowfullscreen"></iframe></center>
 
-                                                                            </div><!-- /End Title Block Container -->
-                                                                        </div><!-- /End Title Block -->
+                                                                <div class="line-separator"></div>
 
+                                                                <h4>QUICK F.A.Q.</h2>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End Title Block Container -->
+                                                        </div><!-- /End Title Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>Why users duplicating in list?</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>BigBlueButton freeSWITCH service is allowing duplicating users. In the next updates BBB dev team should update it.</p>
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>Why users duplicating in list?</h4>
 
+                                                                <!-- Description -->
+                                                                <p>BigBlueButton freeSWITCH service is allowing duplicating users. In the next updates BBB dev team should update it.</p>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>Why some data is not available?</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>BidBlueButton scripts keep cleaning conference data what is the oldest then 20 days after ending.</p>
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>Why some data is not available?</h4>
 
+                                                                <!-- Description -->
+                                                                <p>BidBlueButton scripts keep cleaning conference data what is the oldest then 20 days after ending.</p>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>There is no *.mp4 download button.</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>For download conference record in .mp4 format converting script should be installed on your server.</p>
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>There is no *.mp4 download button.</h4>
 
+                                                                <!-- Description -->
+                                                                <p>For download conference record in .mp4 format converting script should be installed on your server.</p>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>I need special format data.</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>If you need data in some special format (pdf, html etc) please contact us.</p>
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>I need special format data.</h4>
 
+                                                                <!-- Description -->
+                                                                <p>If you need data in some special format (pdf, html etc) please contact us: support@webhostingzone.org</p>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>How do i change data in reports?</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>There is no way to change data in reports (conference name, date etc). You're able to do it manually after download the file.</p>
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>How do i change data in reports?</h4>
 
+                                                                <!-- Description -->
+                                                                <p>There is no way to change data in reports (conference name, date etc). You're able to do it manually after download the file.</p>
 
-                                                                        <!-- FAQ Block -->
-                                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
-                                                                            <!-- FAQ Block Container -->
-                                                                            <div class="faq-block-container" style="height: 158px;">
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
-                                                                                <!-- Title -->
-                                                                                <h4>How do i contact with you?</h4>
 
-                                                                                <!-- Description -->
-                                                                                <p>Contact with your conference administrator.</p>                               
+                                                        <!-- FAQ Block -->
+                                                        <div class="col-lg-4 col-md-6 faq-block faq-block-style-1">
+                                                            <!-- FAQ Block Container -->
+                                                            <div class="faq-block-container" style="height: 158px;">
 
-                                                                            </div><!-- /End FAQ Block Container -->
-                                                                        </div><!-- /End FAQ Block -->
+                                                                <!-- Title -->
+                                                                <h4>How do i contact with you?</h4>
 
+                                                                <!-- Description -->
+                                                                <p>Email: support@webhostingzone.org  Phone: +1 (404) 382 9079 webhostingzone.org</p>                               
 
-                                                                    </div><!-- /End row -->
-                                                                </div><!-- /End container -->
+                                                            </div><!-- /End FAQ Block Container -->
+                                                        </div><!-- /End FAQ Block -->
 
 
-                                                            </div><!-- /End Section Container -->
-                                                        </div><!-- /End FAQ 3 --><!-- Timeline 1
-                                                        ==================================================================== -->
-                                            </div><!-- /End Timeline 1 --><!-- Copyright 2
-                                                        ==================================================================== -->
-                                                        <footer id="copyright-section-2" class="copyright-section white-section">
-                                                            <!-- Section Container -->
-                                                            <div class="section-container">
+                                                    </div><!-- /End row -->
+                                                </div><!-- /End container -->
 
 
-                                                                <!-- container -->
-                                                                <div class="container">
-                                                                    <!-- row -->
-                                                                    <div class="row">
+                                            </div><!-- /End Section Container -->
+                                        </div><!-- /End FAQ 3 --><!-- Timeline 1
+                                        ==================================================================== -->
+                            </div><!-- /End Timeline 1 --><!-- Copyright 2
+                                        ==================================================================== -->
+                                        <footer id="copyright-section-2" class="copyright-section white-section">
+                                            <!-- Section Container -->
+                                            <div class="section-container">
 
 
-                                                                        <!-- Copyright Block -->
-                                                                        <div class="col-md-6 copyright-block">
-                                                                            <!-- Copyright Block Container -->
-                                                                            <div class="copyright-block-container">
+                                                <!-- container -->
+                                                <div class="container">
+                                                    <!-- row -->
+                                                    <div class="row">
 
-                                                                                <!-- Title -->
-                                                                                <p>© 2021 <a href="https://c-gel.it/" title="C-GEL.IT">C-GEL.IT</a></p>
 
-                                                                            </div><!-- /End Copyright Block Container -->
-                                                                        </div><!-- /End Copyright Block -->
+                                                        <!-- Copyright Block -->
+                                                        <div class="col-md-6 copyright-block">
+                                                            <!-- Copyright Block Container -->
+                                                            <div class="copyright-block-container">
 
+                                                                <!-- Title -->
+                                                                <p>ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2020 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
-                                                                        <!-- Copyright Block -->
-                                                                        <div class="col-md-6 copyright-block">
-                                                                            <!-- Copyright Block Container -->
-                                                                            <div class="copyright-block-container">
+                                                            </div><!-- /End Copyright Block Container -->
+                                                        </div><!-- /End Copyright Block -->
 
-                                                                                <!-- Social Icons Block -->
-                                                                                <div class="social-icons-block social-icons-block-sm social-icons-block-style-1 text-right">
-                                                                                    <ul>
-                                                                                        <li><a href="https://c-gel.it/" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                                                                        <li><a href="https://c-gel.it/" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                                                                                    </ul>
-                                                                                </div><!-- /End Social Icons Block -->
 
-                                                                            </div><!-- /End Copyright Block Container -->
-                                                                        </div><!-- /End Copyright Block -->
+                                                        <!-- Copyright Block -->
+                                                        <div class="col-md-6 copyright-block">
+                                                            <!-- Copyright Block Container -->
+                                                            <div class="copyright-block-container">
 
+                                                                <!-- Social Icons Block -->
+                                                                <div class="social-icons-block social-icons-block-sm social-icons-block-style-1 text-right">
+                                                                    <ul>
+                                                                        <li><a href="''' + fb_link + '''" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                                                        <li><a href="''' + twitter_link + '''" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                                                    </ul>
+                                                                </div><!-- /End Social Icons Block -->
 
-                                                                    </div><!-- /End row -->
-                                                                </div><!-- /End container -->
+                                                            </div><!-- /End Copyright Block Container -->
+                                                        </div><!-- /End Copyright Block -->
 
 
-                                                            </div><!-- /End Section Container -->
+                                                    </div><!-- /End row -->
+                                                </div><!-- /End container -->
 
-                                                        </footer><!-- /End Copyright 2 --></div><!-- /End Main Wrapper -->
 
+                                            </div><!-- /End Section Container -->
 
+                                        </footer><!-- /End Copyright 2 --></div><!-- /End Main Wrapper -->
 
 
-                                                    <!-- Java Script Files		
-                                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>		
-                                                    ======================================================================== -->
-                                                    <script type="text/javascript" src="js/jquery.min.js"></script>
-                                                    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-                                                    <script type="text/javascript" src="js/vendor/bootstrap/js/bootstrap.min.js"></script>
-                                                    <script type="text/javascript" src="js/plugins/mobile/mobile.min.js"></script>
-                                                    <script type="text/javascript" src="js/scripts.js"></script>
 
-                                            <style>		
-                                            #style-switcher {
-                                                z-index: 9999;
-                                                position: fixed;
-                                                top: 100px;
-                                                width: 212px;
-                                                height: auto;
-                                                /*min-height: 200px;*/
-                                                border: 1px solid #f1f1f1;
-                                                border-top-right-radius: 5px;
-                                                border-bottom-right-radius: 5px;
-                                                text-align: left;
-                                                background: white;
-                                                -webkit-transition: all 0.5s;
-                                                -moz-transition: all 0.5s;
-                                                transition: all 0.5s;
-                                            }
 
-                                            .close-style-switcher {
-                                                left: -212px;
-                                            }
+                                    <!-- Java Script Files		
+                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>		
+                                    ======================================================================== -->
+                                    <script type="text/javascript" src="js/jquery.min.js"></script>
+                                    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+                                    <script type="text/javascript" src="js/vendor/bootstrap/js/bootstrap.min.js"></script>
+                                    <script type="text/javascript" src="js/plugins/mobile/mobile.min.js"></script>
+                                    <script type="text/javascript" src="js/scripts.js"></script>
 
-                                            .open-style-switcher {
-                                                left: -1px;
-                                            }
+                            <style>		
+                            #style-switcher {
+                                z-index: 9999;
+                                position: fixed;
+                                top: 100px;
+                                width: 212px;
+                                height: auto;
+                                /*min-height: 200px;*/
+                                border: 1px solid #f1f1f1;
+                                border-top-right-radius: 5px;
+                                border-bottom-right-radius: 5px;
+                                text-align: left;
+                                background: white;
+                                -webkit-transition: all 0.5s;
+                                -moz-transition: all 0.5s;
+                                transition: all 0.5s;
+                            }
 
-                                            #style-switcher .segment {
-                                                width: 100%;
-                                                padding: 15px 10px 15px 0;
-                                                padding: 15px 25px;
+                            .close-style-switcher {
+                                left: -212px;
+                            }
 
-                                            }
+                            .open-style-switcher {
+                                left: -1px;
+                            }
 
-                                            #style-switcher a.panel-button {
-                                                position: absolute;
-                                                top: 30px;
-                                                right: -50px;
-                                                width: 50px;
-                                                height: 50px;
-                                                border: 1px solid #f1f1f1;
-                                                border-top-right-radius: 5px;
-                                                border-bottom-right-radius: 5px;
-                                                text-align: center;
-                                                font-size: 23px;
-                                                line-height: 47px;
-                                                background: white;
-                                                cursor: pointer;
-                                            }
+                            #style-switcher .segment {
+                                width: 100%;
+                                padding: 15px 10px 15px 0;
+                                padding: 15px 25px;
 
-                                            #style-switcher h3 {
-                                                margin: 0;
-                                            }
+                            }
 
-                                            #style-switcher .segment a.switcher {
-                                                display: inline-block;
-                                                width: 25px;
-                                                height: 25px;
-                                                margin-top: 5px;
-                                                margin-right: 3px;
-                                                border: 1px solid #efefef;
-                                                cursor: pointer;
-                                            }
+                            #style-switcher a.panel-button {
+                                position: absolute;
+                                top: 30px;
+                                right: -50px;
+                                width: 50px;
+                                height: 50px;
+                                border: 1px solid #f1f1f1;
+                                border-top-right-radius: 5px;
+                                border-bottom-right-radius: 5px;
+                                text-align: center;
+                                font-size: 23px;
+                                line-height: 47px;
+                                background: white;
+                                cursor: pointer;
+                            }
 
-                                            .red-bg {
-                                                background: #EF4035;
-                                            }
+                            #style-switcher h3 {
+                                margin: 0;
+                            }
 
-                                            .orange-bg {
-                                                background: #F26F21;
-                                            }
+                            #style-switcher .segment a.switcher {
+                                display: inline-block;
+                                width: 25px;
+                                height: 25px;
+                                margin-top: 5px;
+                                margin-right: 3px;
+                                border: 1px solid #efefef;
+                                cursor: pointer;
+                            }
 
-                                            .yellow-bg {
-                                                background: #FFC153;
-                                            }
+                            .red-bg {
+                                background: #EF4035;
+                            }
 
-                                            .green-bg {
-                                                background: #5CB85C;
-                                            }
+                            .orange-bg {
+                                background: #F26F21;
+                            }
 
-                                            .turquoise-bg {
-                                                background: #41C4AB;
-                                            }
+                            .yellow-bg {
+                                background: #FFC153;
+                            }
 
-                                            .aqua-bg {
-                                                background: #38E6D8;
-                                            }
+                            .green-bg {
+                                background: #5CB85C;
+                            }
 
-                                            .blue-bg {
-                                                background: #0A8FD5;
-                                            }
+                            .turquoise-bg {
+                                background: #41C4AB;
+                            }
 
-                                            .purple-bg {
-                                                background: #AC5AFF;
-                                            }
+                            .aqua-bg {
+                                background: #38E6D8;
+                            }
 
-                                            .pink-bg {
-                                                background: #F62459;
-                                            }
+                            .blue-bg {
+                                background: #0A8FD5;
+                            }
 
-                                            .tan-bg {
-                                                background: #C2B49A;
-                                            }
+                            .purple-bg {
+                                background: #AC5AFF;
+                            }
 
-                                            @media(max-width:480px) {
-                                                #style-switcher {
-                                                    top: 30px;
-                                                }
-                                            }		
-                                                </style>		
+                            .pink-bg {
+                                background: #F62459;
+                            }
 
-                                                <script>
-                                                // Style Switcher Open/Close
-                                            $('#style-switcher .panel-button').click(function() {
-                                                //$('#style-switcher').toggleClass('close-style-switcher', 'open-style-switcher', 1000);
-                                                $('#style-switcher').toggleClass('open-style-switcher', 'close-style-switcher', 1000);
-                                                return false;
-                                            });
+                            .tan-bg {
+                                background: #C2B49A;
+                            }
 
-                                            // Color Skins
-                                            $('.switcher').click(function() {
-                                                var title = jQuery(this).attr('title');
-                                                jQuery('#changeable-colors').attr('href', 'css/css/' + title + '.css');
-                                                return false;
-                                            });
+                            @media(max-width:480px) {
+                                #style-switcher {
+                                    top: 30px;
+                                }
+                            }		
+                                </style>		
 
-                                                </script>
+                                <script>
+                                // Style Switcher Open/Close
+                            $('#style-switcher .panel-button').click(function() {
+                                //$('#style-switcher').toggleClass('close-style-switcher', 'open-style-switcher', 1000);
+                                $('#style-switcher').toggleClass('open-style-switcher', 'close-style-switcher', 1000);
+                                return false;
+                            });
+
+                            // Color Skins
+                            $('.switcher').click(function() {
+                                var title = jQuery(this).attr('title');
+                                jQuery('#changeable-colors').attr('href', 'css/css/' + title + '.css');
+                                return false;
+                            });
+
+                                </script>
 
 
                                             <iframe name="ym-native-frame" title="ym-native-frame" frameborder="0" aria-hidden="true" style="opacity: 0 !important; width: 0px !important; height: 0px !important; position: absolute !important; left: 100% !important; bottom: 100% !important; border: 0px !important;"></iframe><ym-measure class="ym-viewport" style="display: block; top: 0px; right: 0px; bottom: 0px; left: 0px; height: 100vh; width: 100vw; position: fixed; transform: translate(0px, -100%); transform-origin: 0px 0px;"></ym-measure><ym-measure class="ym-zoom" style="bottom: 100%; position: fixed; width: 100vw;"></ym-measure></body></html>'''
@@ -756,7 +746,7 @@ def nine(y):
             tr2.join()
 
     else:
-        print("There is no file")
+        print("There is no file.")
 
 
 
@@ -782,7 +772,7 @@ def genglobindexpage():
 
         <!-- fav and icons for Mobile
         ======================================================================== -->
-        <link rel="shortcut icon" href="https://www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
+        <link rel="shortcut icon" href="''' + ui_logo_link + '''">
         <link rel="apple-touch-icon" sizes="57x57" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
         <link rel="apple-touch-icon" sizes="60x60" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
         <link rel="apple-touch-icon" sizes="72x72" href="//www.webhostingzone.org/wp-content/uploads/2020/06/new-logo-small.png">
@@ -874,7 +864,7 @@ def genglobindexpage():
 
                                                 <!-- Logo -->
                                                 <a href="/stat" class="navbar-brand" title="LPB">
-                                                    <img src="https://''' + hname + '''/stat/GEL.png" alt="LPB Logo">
+                                                    <img src="https://www.webhostingzone.org/wp-content/uploads/2020/06/logo.png" alt="LPB Logo">
                                                 </a><!-- /End Logo -->
 
                                                 <!-- Toggle Menu Button -->
@@ -890,7 +880,15 @@ def genglobindexpage():
                                                 <ul class="nav navbar-nav navbar-right">
 
                                                     <li>
-                                                        <a href="https://c-gel.it/" title="">C-GEL.IT</a>
+                                                        <a href="https://www.webhostingzone.org/" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â">WebHostingZone</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="https://www.webhostingzone.org/members/clientarea.php" title="ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒâ€¹Ã…â€œÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚ÂÃƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬ËœÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“">Client Area</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="https://github.com/georgethegreatat/bbb-rec-stat-main/" title="Notes">Release Notes</a>
                                                     </li>
 
                                                 </ul>
@@ -1017,7 +1015,7 @@ def genglobindexpage():
                                     <h4>I need special format data.</h4>
 
                                     <!-- Description -->
-                                    <p>If you need data in some special format (pdf, html etc) please contact us.</p>
+                                    <p>If you need data in some special format (pdf, html etc) please contact us: support@webhostingzone.org</p>
 
                                 </div><!-- /End FAQ Block Container -->
                             </div><!-- /End FAQ Block -->
@@ -1047,7 +1045,7 @@ def genglobindexpage():
                                     <h4>How do i contact with you?</h4>
 
                                     <!-- Description -->
-                                    <p>Email: Call meeting administrator.</p>                               
+                                    <p>Email: support@webhostingzone.org  Phone: +1 (404) 382 9079 webhostingzone.org</p>                               
 
                                 </div><!-- /End FAQ Block Container -->
                             </div><!-- /End FAQ Block -->
@@ -1079,7 +1077,7 @@ def genglobindexpage():
                                 <div class="copyright-block-container">
 
                                     <!-- Title -->
-                                    <p>© 2021 <a href="https://c-gel.it/" title="C-GEL-IT">C-GEL.IT</a></p>
+                                    <p>WebHostingZone © 2021 <a href="https://www.webhostingzone.org/" title="WebHostingZone">WebHostingZone</a>, all rights reserved. Version --> v1.1 <a href="https://github.com/georgethegreatat" title="GitHub</a></p>
 
                                 </div><!-- /End Copyright Block Container -->
                             </div><!-- /End Copyright Block -->
@@ -1093,8 +1091,8 @@ def genglobindexpage():
                                     <!-- Social Icons Block -->
                                     <div class="social-icons-block social-icons-block-sm social-icons-block-style-1 text-right">
                                         <ul>
-                                            <li><a href="https://c-gel.it/" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://c-gel.it/" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                            <li><a href="''' + fb_link + '''" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a href="''' + twitter_link + '''" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                                         </ul>
                                     </div><!-- /End Social Icons Block -->
 
@@ -1255,36 +1253,34 @@ $('.switcher').click(function() {
     htmlindex.write(genpage)
     htmlindex.close()
 
-
 def getresultoperation():
     now = datetime.datetime.now()
     print('Script has been running successfully at: ')
     print(now)
 
-
 def globalinfo():
     bbfile = open('/var/www/stat/stat/recordings_statistics.html', 'w')
-    art0 = '''<!DOCTYPE html>
-<html>
- <head>
-  <meta charset="utf-8">
-  <title>font-family</title>
-  <style>
-   p {
-    font-family: Verdana, Verdana, serif;
-    font-size: 10pt;
-   }
-  </style>
- </head>
- <body>
- <p>'''
+    art0 = '''<center><table class="dataframe" style="width: 840px; height: 73px;" border="0">
+<thead>
+<tr style="text-align: right; height: 24px;">
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 157px;">Meeting Name</th>
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 182px;">Start</th>
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 183px;">End</th>
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 117px;">Participants</th>
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 100px;">Users List</th>
+<th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 100px;">MP4</th>
+</tr>
+</thead>
+</table>
+</center>
+    '''
     bbfile.write(art0)
     bbfile.close()
 
-    internal_meeting_id_list = os.listdir("/data/brick1/var/bigbluebutton/raw")
+    internal_meeting_id_list = os.listdir("/var/bigbluebutton/recording/raw")
 
     for internal_meeting_id in internal_meeting_id_list:
-        path = "/data/brick1/var/bigbluebutton/raw/" + internal_meeting_id + "/events.xml"
+        path = "/var/bigbluebutton/recording/raw/" + internal_meeting_id + "/events.xml"
 
         tree = ET.parse(path)
         root = tree.getroot()
@@ -1330,8 +1326,22 @@ def globalinfo():
         pump = str(pumpy)
 
         bbbfile = open('/var/www/stat/stat/recordings_statistics.html', 'a')
-        art1 = ('Meeting Info: <a href="https://' + hname + '/stat/' + idc + '.html" target="_blank" title="Details">Details</a>' '<br>'
-                'Conference Name: ' + ten(wrt=namemeeting) + '<br>' 'Server: ' + server_fin + '<br>' 'Start Time: ' + sttm(mtts=Time1) + '<br>' 'End Time: ' + ettm(mtte=Time2) + '<br>' + 'Participants: ' + pump + '<br>' + '<br><br><br>')
+        art1 =('''<center>
+                <table>
+                <tbody>
+                <tr style="height: 31px;">
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 157px;">''' + ten(wrt=namemeeting) + '''</td>
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 182px;">''' + sttm(mtts=Time1) + '''</td>
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 183px;">''' + ettm(mtte=Time2) + '''</td>
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 117px;">''' + pump + '''</td>
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 100px;"><a title="Details" href="https://''' + hname + '''/stat/''' + idc + '''.html" target="_blank">Link</a></td>
+                <td style="background-color: #d9e1f2; font-family: 'Century Gothic'; font-size: medium; text-align: center; padding: 0px 20px 0px 0px; height: 31px; width: 100px;"><a href="https://''' + hname + '''/record/''' + idc + '''.mp4" title="Download mp4">Download</td>
+                </tr>
+                </tbody>
+                </table>
+                </center>
+                '''
+                )
         if numline <= 2:
             bbbfile.close()
         else:
