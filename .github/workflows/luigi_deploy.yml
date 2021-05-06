@@ -25,4 +25,4 @@ jobs:
           password: ${{ secrets.UNICUSANO_PASS }}
           port: ${{ secrets.UNICUSANO_PORT }}
           source: "Back/s2.py"
-          target: "/var/www/stat/stat/Back"
+          target: "/var/www/stat/stat/"
