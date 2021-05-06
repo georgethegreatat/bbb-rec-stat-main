@@ -6,7 +6,7 @@ name: Deploy back-end & nginx configuration & front-end to Luidi's lb.unicusano.
 on:
   push:
     branches:
-      -lb.unicusano.it_Luigi
+      - lb.unicusano.it_Luigi
       
 jobs:
   Deploy:
