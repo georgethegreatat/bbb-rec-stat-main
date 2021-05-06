@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo Moving files..
+echo Moving files...
 
 mkdir /var/www/stat/
 mkdir /var/www/stat/stat/
