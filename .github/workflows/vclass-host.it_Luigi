@@ -1,0 +1,27 @@
+name: Deploy fresh back-end to Luidi's lb.unicusano.it site
+
+on:
+  push:
+    branches:
+      -  vclass-host.it_Luigi
+      
+  workflow_dispatch:
+      
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v2
+        with:
+          ref: vclass-host.it_Luigi
+        
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.UNICUSANO_HOST }}
+          username: ${{ secrets.UNICUSANO_USER }}
+          password: ${{ secrets.UNICUSANO_PASS }}
+          port: ${{ secrets.UNICUSANO_PORT }}
+          source: "Back/s2.py"
+          target: "/var/www/stat/stat/"
