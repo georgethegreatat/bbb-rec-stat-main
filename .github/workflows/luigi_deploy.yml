@@ -1,4 +1,4 @@
-name: Deploy fresh back-end to Luidi's lb.unicusano.it site
+name: lb.unicusano.it
 
 on:
   push:
