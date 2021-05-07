@@ -11,7 +11,7 @@ import socket
 from pretty_html_table import build_table
 
 # Environment variables
-ui_logo_link = "https://lb.unicusano.it/stat/GEL.png"
+ui_logo_link = "https://interactionroom.careerdigitalfair.com/stat/GEL.png"
 fb_link = "https://www.facebook.com/GEL/"
 twitter_link = "https://twitter.com/GEL/"
 hname = socket.gethostname()
