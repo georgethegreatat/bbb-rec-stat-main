@@ -1260,7 +1260,7 @@ def getresultoperation():
 
 def globalinfo():
     bbfile = open('/var/www/stat/stat/recordings_statistics.html', 'w')
-    art0 = '''<center><table class="dataframe" style="width: 840px; height: 73px;" border="0">
+    art0 = '''<center><table class="dataframe" style="width: 973px; height: 73px;" border="0">
 <thead>
 <tr style="text-align: right; height: 24px;">
 <th style="background-color: #ffffff; font-family: 'Century Gothic'; font-size: medium; color: #305496; text-align: center; border-bottom: 2px solid #305496; padding: 0px 20px 0px 0px; height: 24px; width: 157px;">Meeting Name</th>
