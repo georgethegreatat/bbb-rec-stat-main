@@ -1,4 +1,4 @@
-name: Deploy fresh back-end to Luidi's vclass-host.it site
+name: vclass-host.it
 
 on:
   push:
