@@ -81,14 +81,14 @@ def convert_timestamp(timestamp):
 
 # General data function; parsing userlist from events.xml and creating json with it; converting to csv and html;
 def nine(y):
-    if os.path.isfile("/data/brick1/var/bigbluebutton/raw/" + y + "/events.xml"):
+    if os.path.isfile("/var/bigbluebutton/recording/raw/" + y + "/events.xml"):
         if os.path.isfile("/var/www/stat/stat/" + y + ".htm"):
             print("File already in the folder. ID: ", y)
         else:
-            archived_files_id_list = os.listdir("/data/brick1/var/bigbluebutton/raw")
+            archived_files_id_list = os.listdir("/var/bigbluebutton/recording/raw")
             for archived_files_id in archived_files_id_list:
 
-                root = ET.parse("/data/brick1/var/bigbluebutton/raw/" + y + '/events.xml').getroot()
+                root = ET.parse("/var/bigbluebutton/recording/raw/" + y + '/events.xml').getroot()
 
                 visit_log = {}
                 joins, leaves = [], []
@@ -1282,10 +1282,10 @@ def globalinfo():
     bbfile.write(art0)
     bbfile.close()
 
-    internal_meeting_id_list = os.listdir("/data/brick1/var/bigbluebutton/raw")
+    internal_meeting_id_list = os.listdir("/var/bigbluebutton/recording/raw")
 
     for internal_meeting_id in internal_meeting_id_list:
-        path = "/data/brick1/var/bigbluebutton/raw/" + internal_meeting_id + "/events.xml"
+        path = "/var/bigbluebutton/recording/raw/" + internal_meeting_id + "/events.xml"
 
         tree = ET.parse(path)
         root = tree.getroot()
