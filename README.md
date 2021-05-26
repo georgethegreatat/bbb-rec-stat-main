@@ -1,4 +1,4 @@
-[!] The project is finished for me because I finished all my projects with BigBlueButton. So now it's open and enyone can use it. It's not finished so you can use my code. [!]
+[!] The project is finished for me because I finished all my projects with BigBlueButton. So now it's open and enyone can use it. The project is not completed. [!]
 
 BBBRSS - BigBlueButton Recordings Statistic Script.
 
