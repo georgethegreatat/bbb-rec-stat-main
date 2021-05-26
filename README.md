@@ -1,3 +1,5 @@
+[!] The project is finished for me because I finished all my projects with BigBlueButton. So now it's open and enyone can use it. It's not finished so you can use my code. [!]
+
 BBBRSS - BigBlueButton Recordings Statistic Script.
 
 This script is giving you Meetings Stat (if it was recorded) on Web-page with minimal UI. 
